@@ -1,0 +1,1 @@
+# SlackBeaconCheckin-Rails

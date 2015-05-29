@@ -13,14 +13,11 @@ class SlackPostsController < ApplicationController
 
 	def create_entry
 		@slack_post = SlackPost.new(slack_post_params)
-		p slack_post_params
 		if @slack_post.save
 			render status: 200, json: @slack_post
 		else
 			render status: 500
 		end 
-		#hash = JSON.parse(request.body.read)
-		#puts hash
   		response = HTTParty.post(
   				Rails.application.secrets.address,
   				:body => {"text" => '@%2$s just entered %1$s' % [@slack_post.location, @slack_post.name]
@@ -29,14 +26,11 @@ class SlackPostsController < ApplicationController
 
 	def create_exit
 		@slack_post = SlackPost.new(slack_post_params)
-		p slack_post_params
 		if @slack_post.save
 			render status: 200, json: @slack_post
 		else
 			render status: 500
 		end 
-		#hash = JSON.parse(request.body.read)
-		#puts hash
   		response = HTTParty.post(
   				Rails.application.secrets.address,
   				:body => {"text" => '@%2$s just left %1$s' % [@slack_post.location, @slack_post.name]

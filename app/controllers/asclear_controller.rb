@@ -1,0 +1,2 @@
+class AsclearController < ApplicationController
+end

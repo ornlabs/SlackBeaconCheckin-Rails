@@ -1,23 +1,27 @@
 class SlackPostsController < ApplicationController
 	skip_before_filter  :verify_authenticity_token
-	protect_from_forgery with: :null_session
+	#protect_from_forgery with: :null_session
 
 	def index
 	end
 
 	def show
+		@slack_post = SlackPost.find(params[:id])
 	end
 
 	def new
 	end
 
 	def create_entry
+
 		@slack_post = SlackPost.new(slack_post_params)
+		
 		if @slack_post.save
 			render status: 200, json: @slack_post
 		else
-			render status: 500
-		end 
+			render :new, status: 500
+		end
+
   		response = HTTParty.post(
   				Rails.application.secrets.address,
   				:body => {"text" => '@%2$s just entered %1$s' % [@slack_post.location, @slack_post.name]
@@ -25,12 +29,15 @@ class SlackPostsController < ApplicationController
 	end
 
 	def create_exit
+
 		@slack_post = SlackPost.new(slack_post_params)
+
 		if @slack_post.save
 			render status: 200, json: @slack_post
 		else
-			render status: 500
+			render :new, status: 500
 		end 
+
   		response = HTTParty.post(
   				Rails.application.secrets.address,
   				:body => {"text" => '@%2$s just left %1$s' % [@slack_post.location, @slack_post.name]

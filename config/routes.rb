@@ -4,10 +4,12 @@ Rails.application.routes.draw do
       scope '/enter' do
         #resources :slack_posts
         post '/' => 'slack_posts#create_entry'
+        get '/:id' => 'slack_posts#show'
       end
       scope '/leave' do
         #resources :slack_posts
         post '/' => 'slack_posts#create_exit'
+        get '/:id' => 'slack_posts#show'
       end
     end
   end

@@ -1,5 +1,6 @@
 class UuidsController < ApplicationController
   before_action :set_uuid, only: [:show, :edit, :update, :destroy]
+  before_filter :authenticate_user!, :except => [:show, :index]
 
   # GET /uuids
   # GET /uuids.json

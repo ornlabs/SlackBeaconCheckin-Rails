@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Uuid:</strong>
+  <%= @uuid.uuid %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @uuid.location %>
+</p>
+
+<%= link_to 'Edit', edit_uuid_path(@uuid) %> |
+<%= link_to 'Back', uuids_path %>

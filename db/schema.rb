@@ -11,10 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150528153116) do
+ActiveRecord::Schema.define(version: 20150605191205) do
 
   create_table "slack_posts", force: :cascade do |t|
     t.string   "name"
+    t.text     "location"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "uuids", force: :cascade do |t|
+    t.text     "uuid"
     t.text     "location"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

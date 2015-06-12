@@ -16,7 +16,11 @@ class UuidsController < ApplicationController
 
   # GET /uuids/new
   def new
-    @uuid = Uuid.new
+    if current_user.admin?
+      @uuid = Uuid.new
+    else
+      render_404
+    end
   end
 
   # GET /uuids/1/edit
@@ -73,4 +77,13 @@ class UuidsController < ApplicationController
     def uuid_params
       params.require(:uuid).permit(:uuid, :location)
     end
+
+    def render_404
+      respond_to do |format|
+        format.html { render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found }
+        format.xml  { head :not_found }
+        format.any  { head :not_found }
+      end
+    end
+
 end

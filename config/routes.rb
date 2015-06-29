@@ -1,15 +1,18 @@
 Rails.application.routes.draw do
+
+  devise_for :users
   scope :api do
     scope :v1 do
       scope '/enter' do
-        #resources :slack_posts
         post '/' => 'slack_posts#create_entry'
         get '/:id' => 'slack_posts#show'
       end
       scope '/leave' do
-        #resources :slack_posts
         post '/' => 'slack_posts#create_exit'
         get '/:id' => 'slack_posts#show'
+      end
+      scope '/' do
+        resources :uuids
       end
     end
   end

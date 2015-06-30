@@ -11,9 +11,14 @@ Rails.application.routes.draw do
         post '/' => 'slack_posts#create_exit'
         get '/:id' => 'slack_posts#show'
       end
-      scope '/' do
-        resources :uuids
+      scope '/uuids' do
+        get '/' => 'uuids#index'
       end
+    end
+  end
+  scope :admin do
+    scope '/' do
+      resources :uuids
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

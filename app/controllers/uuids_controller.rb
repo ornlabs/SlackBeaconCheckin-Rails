@@ -33,40 +33,54 @@ class UuidsController < ApplicationController
   # POST /uuids
   # POST /uuids.json
   def create
-    @uuid = Uuid.new(uuid_params)
+    if current_user.admin?
 
-    respond_to do |format|
-      if @uuid.save
-        format.html { redirect_to @uuid, notice: 'Uuid was successfully created.' }
-        format.json { render :show, status: :created, location: @uuid }
-      else
-        format.html { render :new }
-        format.json { render json: @uuid.errors, status: :unprocessable_entity }
+      @uuid = Uuid.new(uuid_params)
+
+      respond_to do |format|
+        if @uuid.save
+          format.html { redirect_to @uuid, notice: 'Uuid was successfully created.' }
+          format.json { render :show, status: :created, location: @uuid }
+        else
+          format.html { render :new }
+          format.json { render json: @uuid.errors, status: :unprocessable_entity }
+        end
       end
+    else 
+      render_404
     end
+
   end
 
   # PATCH/PUT /uuids/1
   # PATCH/PUT /uuids/1.json
   def update
+    if current_user.admin?
     respond_to do |format|
-      if @uuid.update(uuid_params)
-        format.html { redirect_to @uuid, notice: 'Uuid was successfully updated.' }
-        format.json { render :show, status: :ok, location: @uuid }
-      else
-        format.html { render :edit }
-        format.json { render json: @uuid.errors, status: :unprocessable_entity }
+        if @uuid.update(uuid_params)
+          format.html { redirect_to @uuid, notice: 'Uuid was successfully updated.' }
+          format.json { render :show, status: :ok, location: @uuid }
+        else
+          format.html { render :edit }
+          format.json { render json: @uuid.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      render_404
     end
   end
 
   # DELETE /uuids/1
   # DELETE /uuids/1.json
   def destroy
-    @uuid.destroy
-    respond_to do |format|
-      format.html { redirect_to uuids_url, notice: 'Uuid was successfully destroyed.' }
-      format.json { head :no_content }
+    if current_user.admin?
+      @uuid.destroy
+      respond_to do |format|
+        format.html { redirect_to uuids_url, notice: 'Uuid was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      render_404
     end
   end
 

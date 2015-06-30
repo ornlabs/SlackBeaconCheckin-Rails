@@ -6,7 +6,10 @@ class UuidsController < ApplicationController
   # GET /uuids.json
   def index
     @uuids = Uuid.all
-    render json: {payload: @uuids}
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: {payload: @uuids} }
+    end
   end
 
   # GET /uuids/1

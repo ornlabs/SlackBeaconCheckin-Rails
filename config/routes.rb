@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  devise_for :users
   scope :api do
     scope :v1 do
       scope '/enter' do
@@ -17,7 +16,9 @@ Rails.application.routes.draw do
     end
   end
   scope :admin do
+    devise_for :users
     scope '/' do
+      get '/' => 'admin#index'
       resources :uuids
     end
   end
@@ -25,7 +26,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
- root 'welcome#index'
+ #root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

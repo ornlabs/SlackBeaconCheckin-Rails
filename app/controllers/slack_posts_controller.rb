@@ -1,6 +1,5 @@
 class SlackPostsController < ApplicationController
 	skip_before_filter  :verify_authenticity_token
-	#protect_from_forgery with: :null_session
 
 	def index
 	end
@@ -22,10 +21,7 @@ class SlackPostsController < ApplicationController
 			render :new, status: 500
 		end
 
-  		response = HTTParty.post(
-  				Rails.application.secrets.address,
-  				:body => {"text" => '@%2$s just entered %1$s' % [@slack_post.location, @slack_post.name]
-  				}.to_json)
+    post_to_integrations('@%2$s just entered %1$s' % [@slack_post.location, @slack_post.name])
 	end
 
 	def create_exit
@@ -38,10 +34,7 @@ class SlackPostsController < ApplicationController
 			render :new, status: 500
 		end 
 
-  		response = HTTParty.post(
-  				Rails.application.secrets.address,
-  				:body => {"text" => '@%2$s just left %1$s' % [@slack_post.location, @slack_post.name]
-  				}.to_json)
+    post_to_integrations('@%2$s just left %1$s' % [@slack_post.location, @slack_post.name])
 	end
 
 
@@ -49,4 +42,12 @@ class SlackPostsController < ApplicationController
 		def slack_post_params
 			params.require(:slack_post).permit(:name, :location)
 		end
+
+    def post_to_integrations(message) 
+      SlackIntegration.all.each { |integration| 
+        response = HTTParty.post(
+          integration.hook_url,
+          :body => {'text' => message}.to_json)
+      }
+    end
 end

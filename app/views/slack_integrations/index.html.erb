@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Integrations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Hook URL</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @slack_integrations.each do |integration| %>
+      <tr>
+        <td><%= integration.hook_url %></td>
+        <td><%= link_to 'Show', integration %></td>
+        <td><%= link_to 'Edit', edit_slack_integration_path(integration) %></td>
+        <td><%= link_to 'Destroy', integration, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Integration', new_slack_integration_path %>
+<%= link_to 'Back', controller: :admin, action: :index %>

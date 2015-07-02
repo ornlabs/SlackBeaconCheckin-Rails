@@ -1,0 +1,9 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Integration:</strong>
+  <%= @slack_integration.hook_url %>
+</p>
+
+<%= link_to 'Edit', edit_slack_integration_path(@slack_integration) %> |
+<%= link_to 'Back', slack_integrations_path %>

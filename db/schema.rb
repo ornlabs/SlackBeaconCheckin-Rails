@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150612181707) do
+ActiveRecord::Schema.define(version: 20150701204201) do
+
+  create_table "slack_integrations", force: :cascade do |t|
+    t.text     "hook_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "slack_posts", force: :cascade do |t|
     t.string   "name"

@@ -14,14 +14,14 @@ class SlackPostsController < ApplicationController
 	def create_entry
 
 		@slack_post = SlackPost.new(slack_post_params)
-		
+
 		if @slack_post.save
 			render status: 200, json: @slack_post
 		else
 			render :new, status: 500
 		end
 
-    post_to_integrations('@%2$s just entered %1$s' % [@slack_post.location, @slack_post.name])
+    post_to_integrations('<a href="/team/%2$s" target="/team/%2$s" data-member-name="%2$s" class="internal_member_link">@%2$s</a> just entered %1$s' % [@slack_post.location, @slack_post.name])
 	end
 
 	def create_exit
@@ -32,10 +32,12 @@ class SlackPostsController < ApplicationController
 			render status: 200, json: @slack_post
 		else
 			render :new, status: 500
-		end 
+		end
 
-    post_to_integrations('@%2$s just left %1$s' % [@slack_post.location, @slack_post.name])
+    post_to_integrations('<a href="/team/%2$s" target="/team/%2$s" data-member-name="%2$s" class="internal_member_link">@%2$s</a> just left %1$s' % [@slack_post.location, @slack_post.name])
 	end
+
+
 
 
 	private
@@ -43,8 +45,8 @@ class SlackPostsController < ApplicationController
 			params.require(:slack_post).permit(:name, :location)
 		end
 
-    def post_to_integrations(message) 
-      SlackIntegration.all.each { |integration| 
+    def post_to_integrations(message)
+      SlackIntegration.all.each { |integration|
         response = HTTParty.post(
           integration.hook_url,
           :body => {'text' => message}.to_json)
